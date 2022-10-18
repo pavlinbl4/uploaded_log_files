@@ -22,7 +22,7 @@ def main(path_to_file):
 
 
 if __name__ == '__main__':
-    path_to_log_file = "/Volumes/big4photo-4/Отправки/Kommersant/upload-221017-1536-FTP.log"
+    path_to_log_file = "/Volumes/big4photo/Documents/photo_upload_logs/PXP/upload-220727-2238-FTP.log"
     main(path_to_log_file)
 
     assert image_name(path_to_log_file) is not None
