@@ -3,8 +3,9 @@ import re
 
 def find_name(log_line):
     pattern = r'(?<=/)[A-Za-z0-9_-]+\.(JPG|jpg)'
+    ftp_pattern = r'@[a-z-\.]+(?=/)'
     if re.search(pattern, log_line) is not None:
-        return re.search(pattern, log_line).group()
+        return re.search(pattern, log_line).group(), re.search(ftp_pattern, log_line).group()
 
 
 def image_name(path_to_file):  # return list of lines
