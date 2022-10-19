@@ -8,7 +8,10 @@ def find_name(log_line):
     pattern = r'(?<=/)[A-Za-z0-9_-]+\.(JPG|jpg)'
     ftp_pattern = r'@[a-z-\.]+(?=/)'
     if re.search(pattern, log_line) is not None:
-        return re.search(pattern, log_line).group(), re.search(ftp_pattern, log_line).group()
+        try:
+            return re.search(pattern, log_line).group(), re.search(ftp_pattern, log_line).group()
+        except AttributeError:
+            print(f"AttributeError - {log_line = }")
 
 
 def image_name(path_to_file):  # return list of lines from log file
@@ -33,7 +36,7 @@ def main(path_to_log_file):
     for log_line in log_lines:
         if find_name(log_line) is not None:
             image_file_name, ftp_name = find_name(log_line)
-            print(find_name(log_line))  # get file name and ftp address
+            # print(find_name(log_line))  # get file name and ftp address
             row_number = find_row_with_image_name(image_file_name, path_to_report_file)  # get row to write
             column_name = get_column_name(ftp_name)
             if row_number is None:  # if no image_file_name in "A" column write data to new column
@@ -46,10 +49,10 @@ def main(path_to_log_file):
 
 if __name__ == '__main__':
     pattern = '*.log'
-    # path_all_log_files = '/Volumes/big4photo/Documents/photo_upload_logs'
+    path_all_log_files = '/Volumes/big4photo/Documents/photo_upload_logs'
     # path_all_log_files = '/Volumes/big4photo/Documents/photo_upload_logs/TASS'
     # path_all_log_files = '/Volumes/big4photo/Documents/photo_upload_logs/Kommersant'
-    path_all_log_files = '/Volumes/big4photo/Documents/photo_upload_logs/PXP'
+    # path_all_log_files = '/Volumes/big4photo/Documents/photo_upload_logs/PXP'
 
     all_log_files = find_logs(pattern, path_all_log_files)
     for path_to_log_file in all_log_files:
