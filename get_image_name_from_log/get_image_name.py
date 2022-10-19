@@ -1,5 +1,6 @@
 import re
 
+from find_log_files import find_logs
 from xlsx_report_file import create_report_file, find_row_with_image_name, find_last_row, write_to_file
 
 
@@ -17,10 +18,13 @@ def image_name(path_to_file):  # return list of lines from log file
 
 
 def get_column_name(ftp_name):  # return colum's letter for ftp address
-    ftp_dict = {"ftp.kommersant.ru": "B",  # check ftp address !!!!!
-                "ftp.tass.ru": "D",
-                "ftp.pxp.ru": "C"}
+    ftp_dict = {"@ftp.kommersant.ru": "B",
+                "@ftp.itar-tass.com": "D",
+                "@stringer.photoxpress.ru": "C"}
     return ftp_dict[ftp_name]
+
+
+
 
 
 def main(path_to_log_file):
@@ -37,8 +41,20 @@ def main(path_to_log_file):
             write_to_file(path_to_report_file, image_file_name, column_name, row_number)
 
 
+
+
+
 if __name__ == '__main__':
-    path_to_log_file = "/Volumes/big4photo/Documents/photo_upload_logs/PXP/upload-220727-2238-FTP.log"
-    main(path_to_log_file)
+    pattern = '*.log'
+    # path_all_log_files = '/Volumes/big4photo/Documents/photo_upload_logs'
+    # path_all_log_files = '/Volumes/big4photo/Documents/photo_upload_logs/TASS'
+    # path_all_log_files = '/Volumes/big4photo/Documents/photo_upload_logs/Kommersant'
+    path_all_log_files = '/Volumes/big4photo/Documents/photo_upload_logs/PXP'
+
+    all_log_files = find_logs(pattern, path_all_log_files)
+    for path_to_log_file in all_log_files:
+        # path_to_log_file = "/Volumes/big4photo/Documents/photo_upload_logs/PXP/upload-220915-1524-FTP.log"
+        main(path_to_log_file)
+
 
     assert image_name(path_to_log_file) is not None
